@@ -18,7 +18,7 @@ public class CabInvoiceTest
 	}
 
 	@Test
-	public void givenDistanceAndTimeShouldReturnFare()
+	public void givenDistanceAndTimeShouldReturnFare() //given distance and time.
 	{
 		double distance = 5;
 		int time = 5;
@@ -27,12 +27,20 @@ public class CabInvoiceTest
 	}
 	
 	@Test
-	public void givenLowDistanceAndTimeShouldReturnMinimumFare()
+	public void givenLowDistanceAndTimeShouldReturnMinimumFare() //given low distance and time .
 	{
 		double distance = 0.1;
 		int time = 2;
 		double fare = cabInvoiceMain.calculateFare(distance, time);
 		assertEquals(5.0, fare, 0.0);
+	}
+	
+	@Test
+	public void givenDistanceAndTimeForMultipleridesShouldReturnFare() //given distance and time for multiple rides
+	{
+		Ride[] rides = {new Ride(5.0,5),new Ride(0.1,2)};
+		double totalFare = cabInvoiceMain.calculateTotalFare(rides);
+		assertEquals(60.0, totalFare, 0.0);
 	}
 
 }
