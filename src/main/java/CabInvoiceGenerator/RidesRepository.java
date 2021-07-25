@@ -2,41 +2,48 @@ package CabInvoiceGenerator;
 
 import java.util.*;
 
-public class RidesRepository {
-	
-	HashMap<Integer,Ride[]> ridesMap;
-	
-	public RidesRepository()
+public class RidesRepository
+{
+
+	HashMap<Integer, ArrayList<Ride>> ridesMap;
+
+	public RidesRepository() 
 	{
-		ridesMap = new HashMap<Integer,Ride[]>();
+		ridesMap = new HashMap<Integer, ArrayList<Ride>>();
 	}
-	
-	public void addRidesToMap(int[] userArray, Ride[][] ridesArray)
+
+	public void addRidesToMap(int userId, Ride[] ridesArray)
 	{
-		int counter=0;
-		for(int i : userArray)
+		if (ridesMap.containsKey(userId)) 
 		{
-			if(ridesMap.containsKey(i))
+			ArrayList<Ride> ride = ridesMap.get(userId);
+			if (ride != null)
 			{
-				ridesMap.replace(i, ridesArray[counter]);
-			}
-			else
+				ride.addAll(Arrays.asList(ridesArray));
+				ridesMap.replace(userId, ride);
+			} 
+			else 
 			{
-				ridesMap.put(i,ridesArray[counter]);
+				ride = (ArrayList<Ride>) Arrays.asList(ridesArray);
+				ridesMap.replace(userId, ride);
 			}
-			counter++;
+		} 
+		else
+		{
+			ArrayList<Ride> ride =  new ArrayList<Ride>(Arrays.asList(ridesArray));
+			ridesMap.put(userId, ride);
 		}
 	}
-	
+
 	public Ride[] getRideArray(int userId)
 	{
-		if(ridesMap.containsKey(userId))
+		if (ridesMap.containsKey(userId))
 		{
-			return ridesMap.get(userId);
+			ArrayList<Ride> rides = ridesMap.get(userId);
+			Ride[] ridesarray= new Ride[rides.size()];
+			return rides.toArray(ridesarray);
 		}
 		return null;
 	}
-
-	
 
 }

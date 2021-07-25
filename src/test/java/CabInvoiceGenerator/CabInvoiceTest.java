@@ -1,5 +1,6 @@
 package CabInvoiceGenerator;
 
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -9,15 +10,23 @@ public class CabInvoiceTest
 {
 
 	CabInvoiceMain cabInvoiceMain;
+	RidesRepository ridesRepository;
 
 	@Before
 	public void createObject()
 	{
-		cabInvoiceMain = new CabInvoiceMain();
+		ridesRepository = new RidesRepository();
+		cabInvoiceMain = new CabInvoiceMain(ridesRepository);
+		Ride[] ridesArray= {new Ride(5.0,5,CabRideEnum.NORMAL),new Ride(0.2,2,CabRideEnum.NORMAL)};	
+		cabInvoiceMain.addRidesToRepo(1,ridesArray);		
+		Ride[] ridesArray21 = {new Ride(1.0,5,CabRideEnum.PREMIMUM)};
+		cabInvoiceMain.addRidesToRepo(2,ridesArray21);
+		Ride[] ridesArray22 = {new Ride(0.2,2,CabRideEnum.PREMIMUM),new Ride(2.0,5,CabRideEnum.PREMIMUM)};
+		cabInvoiceMain.addRidesToRepo(2,ridesArray22);	
 	}
 
 	@Test
-	public void givenDistanceAndTimeShouldReturnFare() 
+	public void givenDistanceAndTimeShouldReturnFare()
 	{
 		double distance = 5;
 		int time = 5;
@@ -26,7 +35,7 @@ public class CabInvoiceTest
 	}
 	
 	@Test
-	public void givenLowDistanceAndTimeShouldReturnMinimumFare()
+	public void givenLowDistanceAndTimeShouldReturnMinimumFare() 
 	{
 		double distance = 0.1;
 		int time = 2;
@@ -35,17 +44,17 @@ public class CabInvoiceTest
 	}
 	
 	@Test
-	public void givenDistanceAndTimeForMultipleridesShouldReturnFare() 
+	public void givenDistanceAndTimeForMultipleridesShouldReturnFare()
 	{
-		Ride[] rides = {new Ride(5.0,5),new Ride(0.1,2)};
+		Ride[] rides = {new Ride(5.0,5,CabRideEnum.NORMAL),new Ride(0.1,2,CabRideEnum.NORMAL)};
 		double totalFare = cabInvoiceMain.calculateTotalFare(rides);
 		assertEquals(60.0, totalFare, 0.0);
 	}
 	
 	@Test
-	public void givenDistanceAndTimeForMultipleridesShouldReturnSummary() 
+	public void givenDistanceAndTimeForMultipleridesShouldReturnSummary()
 	{
-		Ride[] rides = {new Ride(5.0,5),new Ride(0.1,2)};
+		Ride[] rides = {new Ride(5.0,5,CabRideEnum.NORMAL),new Ride(0.1,2,CabRideEnum.NORMAL)};
 		InvoiceSummary ecpectedInvoice = new InvoiceSummary(2,60.0);
 		InvoiceSummary outputInvoice = cabInvoiceMain.generateSummary(rides);
 		assertEquals(ecpectedInvoice, outputInvoice);
@@ -54,10 +63,15 @@ public class CabInvoiceTest
 	@Test
 	public void givenUserIdShouldReturnSummary()
 	{
-		Ride[][] ridesArray= {{new Ride(5.0,5),new Ride(0.1,2)},{new Ride(1.0,5),new Ride(0.2,2),new Ride(2.0,5)}};
-		int[] userArray = {1,2};
-		cabInvoiceMain.addRidesToRepo(userArray,ridesArray);
-		InvoiceSummary ecpectedInvoice = new InvoiceSummary(3,45.0);
+		InvoiceSummary ecpectedInvoice = new InvoiceSummary(2,60.0);
+		InvoiceSummary outputInvoice = cabInvoiceMain.generateInvoice(1);
+		assertEquals(ecpectedInvoice, outputInvoice);
+	}
+	
+	@Test
+	public void givenPremimumTypeAndUserIdShouldReturnSummary()
+	{
+		InvoiceSummary ecpectedInvoice = new InvoiceSummary(3,85.0);
 		InvoiceSummary outputInvoice = cabInvoiceMain.generateInvoice(2);
 		assertEquals(ecpectedInvoice, outputInvoice);
 	}

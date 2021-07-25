@@ -6,7 +6,7 @@ public class InvoiceSummary
 	public double totalFare = 0.0;
 	public double avgFare = 0.0;
 
-	public InvoiceSummary(int totalRides, double totalFare) 
+	public InvoiceSummary(int totalRides, double totalFare)
 	{
 		this.totalFare = totalFare;
 		this.totalRides = totalRides;
@@ -31,4 +31,7 @@ public class InvoiceSummary
 			return false;
 		return true;
 	}
+	
+	
+
 }
