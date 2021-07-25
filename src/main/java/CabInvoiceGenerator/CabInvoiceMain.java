@@ -1,6 +1,7 @@
 package CabInvoiceGenerator;
 
-public class CabInvoiceMain
+
+public class CabInvoiceMain 
 {
 	private double COST_PER_KM = 10.0;
 	private int COST_PER_MINUTE = 1;
@@ -12,7 +13,7 @@ public class CabInvoiceMain
 		return fare<MINIMUM_FARE ? MINIMUM_FARE : fare ;
 	}
 
-	public double calculateTotalFare(Ride[] rides) 
+	public double calculateTotalFare(Ride[] rides)
 	{
 		double totalFare = 0;
 		for(Ride ride : rides)
@@ -20,5 +21,11 @@ public class CabInvoiceMain
 			totalFare = totalFare + this.calculateFare(ride.distance, ride.time);
 		}
 		return totalFare;
+	}
+
+	public InvoiceSummary generateSummary(Ride[] rides) 
+	{
+		double totalFare = calculateTotalFare(rides);		
+		return new InvoiceSummary(rides.length,totalFare);
 	}
 }
