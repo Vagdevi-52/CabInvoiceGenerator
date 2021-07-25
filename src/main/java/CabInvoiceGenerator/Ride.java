@@ -1,6 +1,6 @@
 package CabInvoiceGenerator;
 
-public class Ride
+public class Ride 
 {
 	
 	public double distance;

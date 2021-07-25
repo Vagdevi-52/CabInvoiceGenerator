@@ -1,7 +1,6 @@
 package CabInvoiceGenerator;
 
-
-public class InvoiceSummary
+public class InvoiceSummary 
 {
 	public int totalRides = 0;
 	public double totalFare = 0.0;
@@ -32,7 +31,4 @@ public class InvoiceSummary
 			return false;
 		return true;
 	}
-	
-	
-
 }

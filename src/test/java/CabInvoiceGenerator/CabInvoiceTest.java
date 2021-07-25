@@ -11,13 +11,13 @@ public class CabInvoiceTest
 	CabInvoiceMain cabInvoiceMain;
 
 	@Before
-	public void createObject() 
+	public void createObject()
 	{
 		cabInvoiceMain = new CabInvoiceMain();
 	}
 
 	@Test
-	public void givenDistanceAndTimeShouldReturnFare()//distance and time.
+	public void givenDistanceAndTimeShouldReturnFare() 
 	{
 		double distance = 5;
 		int time = 5;
@@ -26,7 +26,7 @@ public class CabInvoiceTest
 	}
 	
 	@Test
-	public void givenLowDistanceAndTimeShouldReturnMinimumFare()//low distance and time.
+	public void givenLowDistanceAndTimeShouldReturnMinimumFare()
 	{
 		double distance = 0.1;
 		int time = 2;
@@ -35,7 +35,7 @@ public class CabInvoiceTest
 	}
 	
 	@Test
-	public void givenDistanceAndTimeForMultipleridesShouldReturnFare()//distance and time for multiple rides.
+	public void givenDistanceAndTimeForMultipleridesShouldReturnFare() 
 	{
 		Ride[] rides = {new Ride(5.0,5),new Ride(0.1,2)};
 		double totalFare = cabInvoiceMain.calculateTotalFare(rides);
@@ -43,11 +43,22 @@ public class CabInvoiceTest
 	}
 	
 	@Test
-	public void givenDistanceAndTimeForMultipleridesShouldReturnSummary() //distance and time should return summary.
+	public void givenDistanceAndTimeForMultipleridesShouldReturnSummary() 
 	{
 		Ride[] rides = {new Ride(5.0,5),new Ride(0.1,2)};
 		InvoiceSummary ecpectedInvoice = new InvoiceSummary(2,60.0);
 		InvoiceSummary outputInvoice = cabInvoiceMain.generateSummary(rides);
+		assertEquals(ecpectedInvoice, outputInvoice);
+	}
+	
+	@Test
+	public void givenUserIdShouldReturnSummary()
+	{
+		Ride[][] ridesArray= {{new Ride(5.0,5),new Ride(0.1,2)},{new Ride(1.0,5),new Ride(0.2,2),new Ride(2.0,5)}};
+		int[] userArray = {1,2};
+		cabInvoiceMain.addRidesToRepo(userArray,ridesArray);
+		InvoiceSummary ecpectedInvoice = new InvoiceSummary(3,45.0);
+		InvoiceSummary outputInvoice = cabInvoiceMain.generateInvoice(2);
 		assertEquals(ecpectedInvoice, outputInvoice);
 	}
 
